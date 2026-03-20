@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Área do Recrutador - Gestão de Vagas</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; margin-bottom: 20px; }
+        .hidden { display: none; }
+        input, select, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { cursor: pointer; font-weight: bold; background: #1056b9; color: white; border: none; }
+        .btn-logout { background: #64748b; margin-top: 20px; }
+        .vaga-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+        .btn-editar { 
+    background: #2563eb; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+.btn-editar:hover { background: #0d9cc0; }
+    </style>
+</head>
+<body>
+
+    <h1>Painel Administrativo</h1>
+
+    <div id="authBox" class="card">
+        <h2 id="authTitle">Login Recrutador</h2>
+        <input type="text" id="user" placeholder="Usuário">
+        <input type="password" id="pass" placeholder="Senha">
+        <button onclick="logar()">Entrar</button>
+        <p style="font-size: 0.8em; text-align: center;">
+            <a href="#" onclick="alternar()">Criar nova conta</a>
+        </p>
+    </div>
+
+    <div id="vagasBox" class="card hidden">
+        <h2>Cadastrar Nova Vaga</h2>
+        <input type="text" id="titulo" placeholder="Título da Vaga">
+        <select id="esc">
+            <option value="Ensino Médio">Ensino Médio</option>
+            <option value="Graduação">Graduação</option>
+            <option value="Pós-Graduação">Pós-Graduação</option>
+        </select>
+        <input type="text" id="cursos" placeholder="Cursos (separados por vírgula)">
+     
+        <button id="btnAcaoVaga" onclick="salvarVaga()">Publicar Vaga</button>
+<button id="btnCancelarEdicao" class="hidden" onclick="cancelarEdicao()" style="background: #64748b;">Cancelar Edição</button>
+        
+       
+        <h3>Vagas Ativas</h3>
+        <div id="lista"></div>
+        <button class="btn-logout" onclick="location.reload()">Sair do Sistema</button>
+    </div>
+
+    <script>
+        let isCadastro = false;
+
+        function alternar() {
+            isCadastro = !isCadastro;
+            document.getElementById('authTitle').innerText = isCadastro ? "Criar Conta" : "Login Recrutador";
+        }
+
+        function logar() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+
+            if(isCadastro) {
+                localStorage.setItem('admin_' + u, p);
+                alert("Conta criada!");
+                alternar();
+            } else {
+                if(localStorage.getItem('admin_' + u) === p && p !== "") {
+                    document.getElementById('authBox').classList.add('hidden');
+                    document.getElementById('vagasBox').classList.remove('hidden');
+                    renderVagas();
+                } else { alert("Acesso negado."); }
+            }
+        }
+
+      function salvarVaga() {
+    const titulo = document.getElementById('titulo').value;
+    const esc = document.getElementById('esc').value;
+    const cursosRaw = document.getElementById('cursos').value;
+
+    if (!titulo || !cursosRaw) {
+        alert("Preencha todos os campos da vaga!");
+        return;
+    }
+
+    let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
+    
+    // Criamos um ID único para cada vaga usando o timestamp atual
+    const novaVaga = {
+        id: Date.now(), 
+        titulo: titulo,
+        escolaridade: esc,
+        cursos: cursosRaw.split(',').map(c => c.trim().toLowerCase())
+    };
+
+    vagas.push(novaVaga);
+    localStorage.setItem('bancoVagas', JSON.stringify(vagas));
+    
+    // Limpar campos após salvar
+    document.getElementById('titulo').value = "";
+    document.getElementById('cursos').value = "";
+    
+    alert("Vaga publicada com sucesso!");
+    renderVagas();
+}
+
+function excluirVaga(idVaga) {
+    if (confirm("Deseja realmente remover esta vaga? Ela não aparecerá mais para os candidatos.")) {
+        let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
+        
+        // Filtra a lista mantendo apenas as vagas que NÃO têm o ID selecionado
+        vagas = vagas.filter(v => v.id !== idVaga);
+        
+        localStorage.setItem('bancoVagas', JSON.stringify(vagas));
+        renderVagas();
+    }
+}
+
+function renderVagas() {
+    let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
+    const lista = document.getElementById('lista');
+    
+    if (vagas.length === 0) {
+        lista.innerHTML = "<p style='color:gray; font-size:0.9rem;'>Nenhuma vaga ativa.</p>";
+        return;
+    }
+
+    lista.innerHTML = vagas.map(v => `
+        <div class="vaga-item">
+            <div>
+                <strong>${v.titulo}</strong><br>
+                <span style="font-size:0.8rem; color:#663">${v.escolaridade}</span>
+            </div>
+            <button class="btn-excluir" onclick="excluirVaga(${v.id})">Remover</button>
+        </div>
+    `).join('');
+}
+
+    </script>
+</body>
+</html>

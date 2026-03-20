@@ -1,0 +1,70 @@
+body { 
+    font-family: 'Segoe UI', sans-serif; 
+    background: url('/assets.css/Captura\ de\ tela\ 2025-06-09\ 144907.png') no-repeat center center fixed; 
+    background-size: cover;
+    color: #1e293b; 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    min-height: 100vh;
+    margin: 0;
+}
+
+.card { 
+    background: rgba(255, 255, 255, 0.92); 
+    padding: 25px; 
+    border-radius: 12px; 
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15); 
+    width: 100%; 
+    max-width: 550px; 
+    backdrop-filter: blur(8px);
+}
+
+.vaga-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid #eee; 
+    padding: 12px 0; 
+}
+
+.btn-excluir { 
+    background: #ef4444; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 0.8rem;
+    width: auto; /* Para não ocupar a linha toda */
+    margin: 0;
+}
+
+.btn-excluir:hover { 
+    background: #dc2626; 
+}
+
+.vaga-item { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid #eee; 
+    padding: 12px 0; 
+}
+
+.btn-excluir { 
+    background: #ef4444; /* Vermelho para exclusão */
+    color: white; 
+    border: none; 
+    padding: 6px 12px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 0.8rem;
+    width: auto; 
+    transition: background 0.3s;
+}
+
+.btn-excluir:hover { 
+    background: #dc2626; 
+}

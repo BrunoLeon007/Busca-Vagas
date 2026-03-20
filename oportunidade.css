@@ -1,0 +1,66 @@
+/* Estilo base do botão */
+button { 
+    width: 100%; 
+    padding: 12px; 
+    margin: 8px 0; 
+    border-radius: 6px; 
+    border: none; 
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 1rem;
+    background: #10b981; /* Cor verde original */
+    color: white; 
+    transition: all 0.3s ease; /* Cria a transição suave */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Efeito HOVER (Ao passar o mouse) */
+button:hover { 
+    background: #053f96; /* Tom de verde mais escuro */
+    transform: translateY(-2px); /* Botão "sobe" levemente */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra aumenta no hover */
+}
+
+/* Efeito ACTIVE (Ao clicar) */
+button:active {
+    transform: translateY(0); /* Botão volta ao lugar ao ser pressionado */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Estilo específico para o botão de Sair (Logout) */
+.btn-logout { 
+    background: #64748b; 
+    margin-top: 20px; 
+}
+
+.btn-logout:hover {
+    background: #475569;
+}
+
+body { 
+    font-family: sans-serif; 
+    /* Substitua o caminho abaixo pelo local onde salvou a imagem */
+   
+    background-size: cover; 
+    margin: 0;
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    min-height: 100vh;
+}
+
+/* Adicionando uma leve transparência nos cards para a imagem aparecer atrás */
+.card { 
+    background: rgba(255, 255, 255, 0.95); 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+    width: 100%; 
+    max-width: 400px; 
+    margin-bottom: 20px; 
+    backdrop-filter: blur(5px); /* Efeito de vidro opaco */
+}
+
+
+
