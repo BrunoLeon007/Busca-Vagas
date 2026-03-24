@@ -2,60 +2,123 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <title>Área do Recrutador - Gestão de Vagas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DN - Painel Administrativo</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; margin-bottom: 20px; }
+        :root { 
+            --dn-blue: #004a99; 
+            --dn-red: #c62127;
+            --text-dark: #1e293b; 
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0;
+            padding: 20px;
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('Captura de tela 2025-06-09 144907.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .card { 
+            background: rgba(255, 255, 255, 0.97); 
+            padding: 30px; 
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            width: 90%; 
+            max-width: 450px; 
+            border-top: 6px solid var(--dn-blue);
+            margin-bottom: 20px;
+        }
+
+        h1 { color: white; text-transform: uppercase; letter-spacing: 2px; font-size: 1.5rem; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        h2 { font-size: 1.2rem; color: var(--dn-blue); margin-top: 0; border-left: 4px solid var(--dn-red); padding-left: 10px; text-transform: uppercase; }
+        h3 { font-size: 1rem; color: #475569; margin-top: 25px; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+
         .hidden { display: none; }
-        input, select, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
-        button { cursor: pointer; font-weight: bold; background: #1056b9; color: white; border: none; }
-        .btn-logout { background: #64748b; margin-top: 20px; }
-        .vaga-item { border-bottom: 1px solid #eee; padding: 10px 0; }
-        .btn-editar { 
-    background: #2563eb; 
-    color: white; 
-    border: none; 
-    padding: 5px 10px; 
-    border-radius: 4px; 
-    cursor: pointer; 
-    font-size: 0.8rem;
-    margin-right: 5px;
-}
-.btn-editar:hover { background: #0d9cc0; }
+        
+        label { display: block; margin-bottom: 4px; font-size: 0.8rem; font-weight: 600; color: #475569; }
+        input, select { 
+            width: 100%; padding: 12px; margin-bottom: 15px; 
+            border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; 
+            font-size: 0.9rem; background: #fff;
+        }
+
+        button { 
+            background: var(--dn-blue); color: white; border: none; padding: 14px;
+            width: 100%; font-weight: bold; text-transform: uppercase;
+            cursor: pointer; transition: 0.3s; border-radius: 4px; margin-bottom: 10px;
+        }
+        button:hover { background: #003366; }
+
+        .btn-logout { background: #64748b; margin-top: 20px; font-size: 0.8rem; }
+        .btn-logout:hover { background: #475569; }
+
+        /* Lista de Vagas */
+        .vaga-item { 
+            background: #f8fafc; border: 1px solid #e2e8f0; 
+            padding: 12px; margin-bottom: 10px; border-radius: 4px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .vaga-info strong { color: var(--dn-blue); font-size: 0.95rem; }
+        .vaga-info span { font-size: 0.8rem; color: #64748b; display: block; }
+
+        .btn-excluir { 
+            background: transparent; color: var(--dn-red); border: 1px solid var(--dn-red);
+            padding: 5px 10px; width: auto; font-size: 0.7rem; margin: 0;
+        }
+        .btn-excluir:hover { background: var(--dn-red); color: white; }
+
+        .auth-footer { font-size: 0.85rem; text-align: center; color: #64748b; margin-top: 10px; }
+        .auth-footer a { color: var(--dn-blue); font-weight: bold; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <h1>Painel Administrativo</h1>
+    <h1>Portal do Recrutador</h1>
 
     <div id="authBox" class="card">
-        <h2 id="authTitle">Login Recrutador</h2>
-        <input type="text" id="user" placeholder="Usuário">
-        <input type="password" id="pass" placeholder="Senha">
-        <button onclick="logar()">Entrar</button>
-        <p style="font-size: 0.8em; text-align: center;">
-            <a href="#" onclick="alternar()">Criar nova conta</a>
-        </p>
+        <h2 id="authTitle">Acesso Restrito</h2>
+        <div style="margin-top:20px">
+            <label>Usuário</label>
+            <input type="text" id="user" placeholder="Digite seu ID ou e-mail">
+            <label>Senha</label>
+            <input type="password" id="pass" placeholder="••••••••">
+            <button onclick="logar()">Entrar no Sistema</button>
+            <div class="auth-footer">
+                Não tem acesso? <a href="#" onclick="alternar()">Solicitar conta</a>
+            </div>
+        </div>
     </div>
 
     <div id="vagasBox" class="card hidden">
-        <h2>Cadastrar Nova Vaga</h2>
-        <input type="text" id="titulo" placeholder="Título da Vaga">
-        <select id="esc">
-            <option value="Ensino Médio">Ensino Médio</option>
-            <option value="Graduação">Graduação</option>
-            <option value="Pós-Graduação">Pós-Graduação</option>
-        </select>
-        <input type="text" id="cursos" placeholder="Cursos (separados por vírgula)">
-     
-        <button id="btnAcaoVaga" onclick="salvarVaga()">Publicar Vaga</button>
-<button id="btnCancelarEdicao" class="hidden" onclick="cancelarEdicao()" style="background: #64748b;">Cancelar Edição</button>
+        <h2>Gestão de Oportunidades</h2>
         
-       
-        <h3>Vagas Ativas</h3>
-        <div id="lista"></div>
-        <button class="btn-logout" onclick="location.reload()">Sair do Sistema</button>
+        <div style="margin-top:20px">
+            <label>Título da Vaga</label>
+            <input type="text" id="titulo" placeholder="Ex: Analista de Suporte Jr">
+            
+            <label>Escolaridade Mínima</label>
+            <select id="esc">
+                <option value="Ensino Médio">Ensino Médio</option>
+                <option value="Graduação">Graduação</option>
+                <option value="Pós-Graduação">Pós-Graduação</option>
+            </select>
+            
+            <label>Cursos Obrigatórios (separados por vírgula)</label>
+            <input type="text" id="cursos" placeholder="Ex: Excel, Inglês, ITIL">
+         
+            <button onclick="salvarVaga()">Publicar Nova Vaga</button>
+            
+            <h3>Vagas Ativas no Mural</h3>
+            <div id="lista"></div>
+            
+            <button class="btn-logout" onclick="location.reload()">Encerrar Sessão</button>
+        </div>
     </div>
 
     <script>
@@ -63,89 +126,85 @@
 
         function alternar() {
             isCadastro = !isCadastro;
-            document.getElementById('authTitle').innerText = isCadastro ? "Criar Conta" : "Login Recrutador";
+            document.getElementById('authTitle').innerText = isCadastro ? "Criar Conta de Recrutador" : "Acesso Restrito";
         }
 
         function logar() {
             const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
 
+            if(!u || !p) { alert("Preencha as credenciais."); return; }
+
             if(isCadastro) {
                 localStorage.setItem('admin_' + u, p);
-                alert("Conta criada!");
+                alert("Conta de administrador criada com sucesso!");
                 alternar();
             } else {
-                if(localStorage.getItem('admin_' + u) === p && p !== "") {
+                if(localStorage.getItem('admin_' + u) === p) {
                     document.getElementById('authBox').classList.add('hidden');
                     document.getElementById('vagasBox').classList.remove('hidden');
                     renderVagas();
-                } else { alert("Acesso negado."); }
+                } else { alert("Usuário ou senha inválidos."); }
             }
         }
 
-      function salvarVaga() {
-    const titulo = document.getElementById('titulo').value;
-    const esc = document.getElementById('esc').value;
-    const cursosRaw = document.getElementById('cursos').value;
+        function salvarVaga() {
+            const titulo = document.getElementById('titulo').value;
+            const esc = document.getElementById('esc').value;
+            const cursosRaw = document.getElementById('cursos').value;
 
-    if (!titulo || !cursosRaw) {
-        alert("Preencha todos os campos da vaga!");
-        return;
-    }
+            if (!titulo || !cursosRaw) {
+                alert("Por favor, preencha todos os campos da vaga.");
+                return;
+            }
 
-    let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
-    
-    // Criamos um ID único para cada vaga usando o timestamp atual
-    const novaVaga = {
-        id: Date.now(), 
-        titulo: titulo,
-        escolaridade: esc,
-        cursos: cursosRaw.split(',').map(c => c.trim().toLowerCase())
-    };
+            let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
+            
+            const novaVaga = {
+                id: Date.now(), 
+                titulo: titulo,
+                escolaridade: esc,
+                cursos: cursosRaw.split(',').map(c => c.trim().toLowerCase())
+            };
 
-    vagas.push(novaVaga);
-    localStorage.setItem('bancoVagas', JSON.stringify(vagas));
-    
-    // Limpar campos após salvar
-    document.getElementById('titulo').value = "";
-    document.getElementById('cursos').value = "";
-    
-    alert("Vaga publicada com sucesso!");
-    renderVagas();
-}
+            vagas.push(novaVaga);
+            localStorage.setItem('bancoVagas', JSON.stringify(vagas));
+            
+            document.getElementById('titulo').value = "";
+            document.getElementById('cursos').value = "";
+            
+            alert("Vaga publicada!");
+            renderVagas();
+        }
 
-function excluirVaga(idVaga) {
-    if (confirm("Deseja realmente remover esta vaga? Ela não aparecerá mais para os candidatos.")) {
-        let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
-        
-        // Filtra a lista mantendo apenas as vagas que NÃO têm o ID selecionado
-        vagas = vagas.filter(v => v.id !== idVaga);
-        
-        localStorage.setItem('bancoVagas', JSON.stringify(vagas));
-        renderVagas();
-    }
-}
+        function excluirVaga(idVaga) {
+            if (confirm("Remover esta vaga do mural de oportunidades?")) {
+                let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
+                vagas = vagas.filter(v => v.id !== idVaga);
+                localStorage.setItem('bancoVagas', JSON.stringify(vagas));
+                renderVagas();
+            }
+        }
 
-function renderVagas() {
-    let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
-    const lista = document.getElementById('lista');
-    
-    if (vagas.length === 0) {
-        lista.innerHTML = "<p style='color:gray; font-size:0.9rem;'>Nenhuma vaga ativa.</p>";
-        return;
-    }
+        function renderVagas() {
+            let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
+            const lista = document.getElementById('lista');
+            
+            if (vagas.length === 0) {
+                lista.innerHTML = "<p style='color:#94a3b8; font-size:0.85rem; text-align:center;'>Nenhuma vaga publicada.</p>";
+                return;
+            }
 
-    lista.innerHTML = vagas.map(v => `
-        <div class="vaga-item">
-            <div>
-                <strong>${v.titulo}</strong><br>
-                <span style="font-size:0.8rem; color:#663">${v.escolaridade}</span>
-            </div>
-            <button class="btn-excluir" onclick="excluirVaga(${v.id})">Remover</button>
-        </div>
-    `).join('');
-}
-
+            lista.innerHTML = vagas.map(v => `
+                <div class="vaga-item">
+                    <div class="vaga-info">
+                        <strong>${v.titulo}</strong>
+                        <span>${v.escolaridade}</span>
+                    </div>
+                    <button class="btn-excluir" onclick="excluirVaga(${v.id})">Excluir</button>
+                </div>
+            `).join('');
+        }
     </script>
 </body>
 </html>
