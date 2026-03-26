@@ -5,193 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diebold Nixdorf - Oportunidades Internas</title>
     <style>
-        :root { 
-            --dn-blue: #004a99; 
-            --dn-red: #c62127;
-            --text-dark: #1e293b; 
-        }
-
+        :root { --dn-blue: #004a99; --dn-red: #c62127; }
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0;
-            padding: 0;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh;
-            /* AQUI ESTÁ A IMAGEM DE FUNDO */
-            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), 
-                        url('Captura de tela 2025-06-09 144907.jpg') no-repeat center center fixed;
+            font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('Captura de tela 2025-06-09 144907.jpg') no-repeat center center fixed;
             background-size: cover;
         }
-
-        .card { 
-            background: rgba(255, 255, 255, 0.96); /* Fundo branco levemente transparente */
-            padding: 35px; 
-            border-radius: 4px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
-            width: 90%; 
-            max-width: 500px; 
-            border-top: 6px solid var(--dn-blue);
-            position: relative;
-        }
-
-        /* Simulação do Logo DN no topo do Card */
-        .header-logo {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        h1 { 
-            font-size: 1.3rem; 
-            color: var(--dn-blue); 
-            margin: 0;
-            text-transform: uppercase;
-            font-weight: 800;
-        }
-
-        .dn-accent { color: var(--dn-red); }
-
-        .section-title { 
-            font-size: 0.75rem; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            color: #64748b; 
-            margin: 20px 0 10px 0; 
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 5px;
-        }
-        
-        label { display: block; margin-bottom: 4px; font-size: 0.8rem; font-weight: 600; color: #475569; }
-        
-        input, select { 
-            width: 100%; 
-            padding: 10px; 
-            margin-bottom: 12px; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 4px;
-            box-sizing: border-box; 
-            font-size: 0.9rem; 
-            background-color: #fcfcfc;
-        }
-        
-        input:focus { border-color: var(--dn-blue); outline: none; box-shadow: 0 0 0 3px rgba(0, 74, 153, 0.1); }
-        
-        button { 
-            background: var(--dn-blue); 
-            color: white; 
-            border: none; 
-            padding: 14px;
-            width: 100%;
-            font-weight: bold; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            margin-top: 10px;
-            border-radius: 4px;
-        }
-
-        button:hover { background: #003366; transform: translateY(-1px); }
-        
-        .result-box { 
-            margin-top: 20px; 
-            padding: 15px; 
-            border-radius: 4px; 
-            display: none; 
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .match { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px; margin-bottom: 8px; border-left: 4px solid #22c55e; }
-        .no-match { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 12px; border-left: 4px solid var(--dn-red); }
-
+        .card { background: white; padding: 30px; border-radius: 4px; width: 90%; max-width: 450px; border-top: 6px solid var(--dn-blue); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        h1 { color: var(--dn-blue); font-size: 1.2rem; text-transform: uppercase; margin: 0 0 20px 0; }
+        label { display: block; font-size: 0.75rem; font-weight: bold; margin-top: 10px; color: #444; }
+        input, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: var(--dn-blue); color: white; border: none; padding: 15px; width: 100%; font-weight: bold; margin-top: 20px; cursor: pointer; border-radius: 4px; }
+        .match { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 10px; margin-top: 10px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-
     <div class="card">
-        <div class="header-logo">
-            <h1>Oportunidade <span class="dn-accent">Interna</span></h1>
-            <small style="color: #94a3b8; font-weight: bold;">Diebold Nixdorf</small>
-        </div>
-
-        <div class="section-title">Dados do Colaborador</div>
+        <h1>Oportunidade <span style="color:var(--dn-red)">Interna</span></h1>
         
         <label>Nome Completo</label>
-        <input type="text" id="nomeCompleto" placeholder="Como no crachá">
+        <input type="text" id="nomeCompleto">
 
-        <div style="display: flex; gap: 10px;">
-            <div style="flex: 1;">
-                <label>Setor Atual</label>
-                <input type="text" id="setorAtual" placeholder="Ex: Logística">
-            </div>
-            <div style="flex: 1;">
-                <label>Data de Ingresso</label>
-                <input type="date" id="dataIngresso">
-            </div>
+        <div style="display:flex; gap:10px">
+            <div style="flex:1"><label>Setor Atual</label><input type="text" id="setor"></div>
+            <div style="flex:1"><label>Data Ingresso</label><input type="date" id="data"></div>
         </div>
-
-        <div class="section-title">Formação e Skills</div>
 
         <label>Escolaridade</label>
         <select id="userEsc">
-            <option value="Ensino Médio">Ensino Médio</option>
-            <option value="Graduação">Graduação</option>
-            <option value="Pós-Graduação">Pós-Graduação</option>
+            <option>Ensino Médio</option>
+            <option>Graduação</option>
+            <option>Pós-Graduação</option>
         </select>
 
-        <label>Cursos Complementares</label>
-        <input type="text" id="userCursos" placeholder="Ex: Excel, Inglês, Lean">
-        
-        <button onclick="buscarVagas()">Consultar Match de Carreira</button>
+        <label>Cursos (Ex: Excel, Lean)</label>
+        <input type="text" id="userCursos">
 
-        <div id="resultados" class="result-box"></div>
+        <button onclick="buscarVagas()">Consultar Match</button>
+        <div id="resultados"></div>
     </div>
 
     <script>
         function buscarVagas() {
             const nome = document.getElementById('nomeCompleto').value;
-            const escolaridade = document.getElementById('userEsc').value;
-            const cursos = document.getElementById('userCursos').value.split(',').map(c => c.trim().toLowerCase());
+            const setor = document.getElementById('setor').value;
+            const esc = document.getElementById('userEsc').value;
+            const cursos = document.getElementById('userCursos').value.toLowerCase().split(',').map(c => c.trim());
 
-            if(!nome) {
-                alert("Por favor, preencha o seu nome para continuar.");
-                return;
-            }
+            if(!nome || !setor) return alert("Preencha nome e setor!");
 
-            // Simulação de banco de dados
-            const vagasCadastradas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
-            const containerRes = document.getElementById('resultados');
-            
-            containerRes.innerHTML = "";
-            containerRes.style.display = "block";
+            const vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
+            const resDiv = document.getElementById('resultados');
+            resDiv.innerHTML = "";
 
-            const matches = vagasCadastradas.filter(vaga => {
-                const escolaridadeOk = (vaga.escolaridade === escolaridade);
-                const cursosOk = vaga.cursos.every(cursoExigido => 
-                    cursos.includes(cursoExigido.toLowerCase())
-                );
-                return escolaridadeOk && cursosOk;
+            const matches = vagas.filter(v => {
+                return v.escolaridade === esc && v.cursos.every(c => cursos.includes(c));
             });
 
             if(matches.length > 0) {
-                containerRes.innerHTML = `<p style="font-size: 0.9rem; margin-bottom: 10px;"><strong>Vagas compatíveis:</strong></p>`;
                 matches.forEach(m => {
-                    containerRes.innerHTML += `
-                        <div class="match">
-                            <strong>${m.titulo}</strong><br>
-                            <span style="font-size: 0.8rem;">Perfil compatível com os requisitos.</span>
-                        </div>`;
+                    resDiv.innerHTML += `<div class="match"><strong>Match: ${m.titulo}</strong></div>`;
+                    registrarMatch(nome, setor, m.titulo);
                 });
+                alert("Match encontrado! O RH foi notificado.");
             } else {
-                containerRes.innerHTML = `
-                    <div class="no-match">
-                        Não encontramos vagas abertas para o seu perfil específico neste momento. Continue a desenvolver as suas competências!
-                    </div>`;
+                resDiv.innerHTML = "<p style='text-align:center; font-size:0.8rem; margin-top:10px;'>Nenhuma vaga compatível no momento.</p>";
+            }
+        }
+
+        function registrarMatch(nome, setor, vaga) {
+            let matches = JSON.parse(localStorage.getItem('candidatosMatches') || "[]");
+            // Evita duplicar o mesmo nome na mesma vaga
+            if(!matches.some(m => m.nome === nome && m.vaga === vaga)) {
+                matches.push({ nome, setor, vaga, dataMatch: new Date().toLocaleDateString('pt-BR') });
+                localStorage.setItem('candidatosMatches', JSON.stringify(matches));
             }
         }
     </script>

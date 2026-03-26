@@ -13,11 +13,8 @@
 
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0;
-            padding: 20px;
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
+            margin: 0; padding: 20px;
+            display: flex; flex-direction: column; align-items: center; 
             min-height: 100vh;
             background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
                         url('Captura de tela 2025-06-09 144907.jpg') no-repeat center center fixed;
@@ -26,11 +23,9 @@
 
         .card { 
             background: rgba(255, 255, 255, 0.97); 
-            padding: 30px; 
-            border-radius: 4px;
+            padding: 30px; border-radius: 4px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
-            width: 90%; 
-            max-width: 450px; 
+            width: 90%; max-width: 600px; 
             border-top: 6px solid var(--dn-blue);
             margin-bottom: 20px;
         }
@@ -40,41 +35,38 @@
         h3 { font-size: 1rem; color: #475569; margin-top: 25px; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
 
         .hidden { display: none; }
-        
         label { display: block; margin-bottom: 4px; font-size: 0.8rem; font-weight: 600; color: #475569; }
-        input, select { 
-            width: 100%; padding: 12px; margin-bottom: 15px; 
-            border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; 
-            font-size: 0.9rem; background: #fff;
-        }
+        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; font-size: 0.9rem; }
 
         button { 
             background: var(--dn-blue); color: white; border: none; padding: 14px;
             width: 100%; font-weight: bold; text-transform: uppercase;
-            cursor: pointer; transition: 0.3s; border-radius: 4px; margin-bottom: 10px;
+            cursor: pointer; transition: 0.3s; border-radius: 4px;
         }
         button:hover { background: #003366; }
 
-        .btn-logout { background: #64748b; margin-top: 20px; font-size: 0.8rem; }
-        .btn-logout:hover { background: #475569; }
+        .auth-footer { text-align: center; margin-top: 20px; font-size: 0.85rem; color: #64748b; }
+        .btn-link-toggle { background: none; color: var(--dn-blue); border: none; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: block; width: 100%; margin-top: 5px; }
+        .btn-link-toggle:hover { text-decoration: underline; color: var(--dn-red); }
 
-        /* Lista de Vagas */
         .vaga-item { 
             background: #f8fafc; border: 1px solid #e2e8f0; 
             padding: 12px; margin-bottom: 10px; border-radius: 4px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .vaga-info strong { color: var(--dn-blue); font-size: 0.95rem; }
-        .vaga-info span { font-size: 0.8rem; color: #64748b; display: block; }
 
-        .btn-excluir { 
-            background: transparent; color: var(--dn-red); border: 1px solid var(--dn-red);
-            padding: 5px 10px; width: auto; font-size: 0.7rem; margin: 0;
-        }
+        .candidato-link { color: var(--dn-blue); font-weight: bold; text-decoration: none; cursor: pointer; border-bottom: 1px dashed var(--dn-blue); }
+        .candidato-link:hover { color: var(--dn-red); border-bottom-color: var(--dn-red); }
+
+        .ficha-detalhes { background: #fff; border: 2px solid var(--dn-blue); padding: 20px; margin-top: 20px; border-radius: 4px; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn-excluir { background: transparent; color: var(--dn-red); border: 1px solid var(--dn-red); padding: 5px 10px; width: auto; font-size: 0.7rem; }
         .btn-excluir:hover { background: var(--dn-red); color: white; }
 
-        .auth-footer { font-size: 0.85rem; text-align: center; color: #64748b; margin-top: 10px; }
-        .auth-footer a { color: var(--dn-blue); font-weight: bold; text-decoration: none; }
+        .btn-lote { background: var(--dn-red); padding: 8px; font-size: 0.75rem; margin-bottom: 10px; display: none; }
+        
+        input[type="checkbox"] { width: auto; margin-right: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -85,12 +77,13 @@
         <h2 id="authTitle">Acesso Restrito</h2>
         <div style="margin-top:20px">
             <label>Usuário</label>
-            <input type="text" id="user" placeholder="Digite seu ID ou e-mail">
+            <input type="text" id="user" placeholder="Digite seu ID">
             <label>Senha</label>
             <input type="password" id="pass" placeholder="••••••••">
             <button onclick="logar()">Entrar no Sistema</button>
             <div class="auth-footer">
-                Não tem acesso? <a href="#" onclick="alternar()">Solicitar conta</a>
+                <span id="textInfo">Não tem conta?</span>
+                <button class="btn-link-toggle" id="btnToggle" onclick="alternar()">Solicitar acesso</button>
             </div>
         </div>
     </div>
@@ -98,112 +91,154 @@
     <div id="vagasBox" class="card hidden">
         <h2>Gestão de Oportunidades</h2>
         
-        <div style="margin-top:20px">
-            <label>Título da Vaga</label>
-            <input type="text" id="titulo" placeholder="Ex: Analista de Suporte Jr">
-            
-            <label>Escolaridade Mínima</label>
-            <select id="esc">
-                <option value="Ensino Médio">Ensino Médio</option>
-                <option value="Graduação">Graduação</option>
-                <option value="Pós-Graduação">Pós-Graduação</option>
-            </select>
-            
-            <label>Cursos Obrigatórios (separados por vírgula)</label>
-            <input type="text" id="cursos" placeholder="Ex: Excel, Inglês, ITIL">
-         
-            <button onclick="salvarVaga()">Publicar Nova Vaga</button>
-            
-            <h3>Vagas Ativas no Mural</h3>
-            <div id="lista"></div>
-            
-            <button class="btn-logout" onclick="location.reload()">Encerrar Sessão</button>
+        <label>Título da Vaga</label>
+        <input type="text" id="titulo">
+        <label>Escolaridade Mínima</label>
+        <select id="esc">
+            <option>Ensino Médio</option>
+            <option>Graduação</option>
+            <option>Pós-Graduação</option>
+        </select>
+        <label>Cursos Obrigatórios (separados por vírgula)</label>
+        <input type="text" id="cursos" placeholder="Excel, Lean, Inglês">
+        <button onclick="salvarVaga()">Publicar Nova Vaga</button>
+
+        <h3>Vagas Ativas no Mural</h3>
+        <div id="listaVagasAtivas"></div>
+
+        <h3>Candidatos Interessados (Matches)</h3>
+        <button id="btnExcluirLote" class="btn-lote" onclick="excluirCandidatosSelecionados()">Excluir Selecionados</button>
+        <div id="listaMatches"></div>
+
+        <div id="detalhesColaborador" class="ficha-detalhes hidden">
+            <h2 style="font-size: 1rem; border-bottom: 2px solid var(--dn-red); padding-bottom: 5px;">Ficha de Perfil Interno</h2>
+            <div id="conteudoFicha" style="font-size: 0.9rem; line-height: 1.6; margin-top: 15px;"></div>
+            <button onclick="fecharFicha()" style="background:#64748b; padding: 8px; font-size: 0.7rem; margin-top: 15px;">Fechar Ficha</button>
         </div>
+        
+        <button onclick="location.reload()" style="background:#64748b; margin-top:30px;">Encerrar Sessão</button>
     </div>
 
     <script>
         let isCadastro = false;
 
-        function alternar() {
-            isCadastro = !isCadastro;
-            document.getElementById('authTitle').innerText = isCadastro ? "Criar Conta de Recrutador" : "Acesso Restrito";
+        function alternar() { 
+            isCadastro = !isCadastro; 
+            document.getElementById('authTitle').innerText = isCadastro ? "Criar Conta" : "Acesso Restrito";
+            document.getElementById('textInfo').innerText = isCadastro ? "Já possui acesso?" : "Não tem conta?";
+            document.getElementById('btnToggle').innerText = isCadastro ? "Fazer Login" : "Solicitar acesso";
         }
 
         function logar() {
             const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
-
-            if(!u || !p) { alert("Preencha as credenciais."); return; }
+            if(!u || !p) return alert("Preencha as credenciais.");
 
             if(isCadastro) {
-                localStorage.setItem('admin_' + u, p);
-                alert("Conta de administrador criada com sucesso!");
-                alternar();
+                localStorage.setItem('admin_'+u, p); alert("Conta de administrador criada!"); alternar();
             } else {
-                if(localStorage.getItem('admin_' + u) === p) {
+                if(localStorage.getItem('admin_'+u) === p) {
                     document.getElementById('authBox').classList.add('hidden');
                     document.getElementById('vagasBox').classList.remove('hidden');
-                    renderVagas();
+                    renderTudo();
                 } else { alert("Usuário ou senha inválidos."); }
             }
         }
 
         function salvarVaga() {
-            const titulo = document.getElementById('titulo').value;
-            const esc = document.getElementById('esc').value;
-            const cursosRaw = document.getElementById('cursos').value;
-
-            if (!titulo || !cursosRaw) {
-                alert("Por favor, preencha todos os campos da vaga.");
-                return;
-            }
+            const t = document.getElementById('titulo').value;
+            const e = document.getElementById('esc').value;
+            const c = document.getElementById('cursos').value;
+            if(!t || !c) return alert("Preencha todos os campos.");
 
             let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
-            
-            const novaVaga = {
-                id: Date.now(), 
-                titulo: titulo,
-                escolaridade: esc,
-                cursos: cursosRaw.split(',').map(c => c.trim().toLowerCase())
-            };
-
-            vagas.push(novaVaga);
+            vagas.push({ id: Date.now(), titulo: t, escolaridade: e, cursos: c.split(',').map(s=>s.trim().toLowerCase()) });
             localStorage.setItem('bancoVagas', JSON.stringify(vagas));
             
             document.getElementById('titulo').value = "";
             document.getElementById('cursos').value = "";
-            
-            alert("Vaga publicada!");
-            renderVagas();
+            renderTudo();
         }
 
-        function excluirVaga(idVaga) {
-            if (confirm("Remover esta vaga do mural de oportunidades?")) {
+        // CONFIRMAÇÃO DE EXCLUSÃO DE VAGA
+        function excluirVaga(id) {
+            if(confirm("ATENÇÃO: Deseja realmente excluir esta vaga do mural? Esta ação não pode ser desfeita.")) {
                 let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
-                vagas = vagas.filter(v => v.id !== idVaga);
-                localStorage.setItem('bancoVagas', JSON.stringify(vagas));
-                renderVagas();
+                localStorage.setItem('bancoVagas', JSON.stringify(vagas.filter(v=>v.id!==id)));
+                renderTudo();
             }
         }
 
-        function renderVagas() {
-            let vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
-            const lista = document.getElementById('lista');
-            
-            if (vagas.length === 0) {
-                lista.innerHTML = "<p style='color:#94a3b8; font-size:0.85rem; text-align:center;'>Nenhuma vaga publicada.</p>";
-                return;
-            }
+        // GESTÃO DE SELEÇÃO DE CANDIDATOS
+        function toggleBotaoLote() {
+            const selecionados = document.querySelectorAll('.check-candidato:checked').length;
+            document.getElementById('btnExcluirLote').style.display = selecionados > 0 ? 'block' : 'none';
+        }
 
-            lista.innerHTML = vagas.map(v => `
+        // EXCLUSÃO DE CANDIDATOS SELECIONADOS (FLAGS)
+        function excluirCandidatosSelecionados() {
+            const checkboxes = document.querySelectorAll('.check-candidato:checked');
+            const nomesParaExcluir = Array.from(checkboxes).map(cb => cb.value);
+
+            if(confirm(`Deseja remover ${nomesParaExcluir.length} candidato(s) da lista de interessados?`)) {
+                let matches = JSON.parse(localStorage.getItem('candidatosMatches') || "[]");
+                // Filtra removendo quem está na lista de nomes selecionados
+                matches = matches.filter(m => !nomesParaExcluir.includes(m.nome));
+                localStorage.setItem('candidatosMatches', JSON.stringify(matches));
+                fecharFicha();
+                renderTudo();
+            }
+        }
+
+        function verDetalhes(nome) {
+            const matches = JSON.parse(localStorage.getItem('candidatosMatches') || "[]");
+            const dados = matches.find(m => m.nome === nome);
+            if(dados) {
+                const ficha = document.getElementById('detalhesColaborador');
+                const conteudo = document.getElementById('conteudoFicha');
+                conteudo.innerHTML = `
+                    <p><strong>Nome:</strong> ${dados.nome}</p>
+                    <p><strong>Setor Atual:</strong> ${dados.setor}</p>
+                    <p><strong>Vaga de Interesse:</strong> ${dados.vaga}</p>
+                    <p><strong>Data do Match:</strong> ${dados.dataMatch}</p>
+                    <hr>
+                    <p style="color:var(--dn-blue)"><strong>Qualificações:</strong></p>
+                    <p>Escolaridade: ${dados.escolaridade || 'Graduação'}</p>
+                    <p>Cursos: ${dados.cursos || 'Não informados'}</p>
+                `;
+                ficha.classList.remove('hidden');
+                ficha.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function fecharFicha() { document.getElementById('detalhesColaborador').classList.add('hidden'); }
+
+        function renderTudo() {
+            // Renderizar Vagas
+            const vagas = JSON.parse(localStorage.getItem('bancoVagas') || "[]");
+            document.getElementById('listaVagasAtivas').innerHTML = vagas.map(v => `
                 <div class="vaga-item">
-                    <div class="vaga-info">
-                        <strong>${v.titulo}</strong>
-                        <span>${v.escolaridade}</span>
-                    </div>
-                    <button class="btn-excluir" onclick="excluirVaga(${v.id})">Excluir</button>
+                    <div><strong>${v.titulo}</strong><br><small>${v.escolaridade}</small></div>
+                    <button class="btn-excluir" onclick="excluirVaga(${v.id})">Excluir Vaga</button>
                 </div>
-            `).join('');
+            `).join('') || "<p style='font-size:0.8rem; color:#94a3b8;'>Nenhuma vaga ativa.</p>";
+
+            // Renderizar Matches com Checkbox
+            const matches = JSON.parse(localStorage.getItem('candidatosMatches') || "[]");
+            document.getElementById('listaMatches').innerHTML = matches.map(m => `
+                <div class="vaga-item" style="border-left: 4px solid #22c55e;">
+                    <div style="display:flex; align-items:center;">
+                        <input type="checkbox" class="check-candidato" value="${m.nome}" onchange="toggleBotaoLote()">
+                        <div>
+                            <a class="candidato-link" onclick="verDetalhes('${m.nome}')">${m.nome}</a>
+                            <br><small>Vaga: <b>${m.vaga}</b></small>
+                        </div>
+                    </div>
+                    <div style="font-size:0.7rem; color:#64748b;">${m.dataMatch}</div>
+                </div>
+            `).reverse().join('') || "<p style='font-size:0.8rem; color:#94a3b8;'>Sem matches no momento.</p>";
+            
+            toggleBotaoLote();
         }
     </script>
 </body>
